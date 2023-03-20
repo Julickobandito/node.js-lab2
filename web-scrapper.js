@@ -54,7 +54,7 @@ const getNews = function() {
 
 getNews();
 setInterval(getNews, 60000);
-console.log("NewsList",newsList);
+
 
 const server = http.createServer((req, res) => {
     const url = req.url;
@@ -63,7 +63,7 @@ const server = http.createServer((req, res) => {
         // read the list of news files from the news directory
         fs.readdir('news', (err, files) => {
             if (err) {
-                res.statusCode = 500;
+                res.statusCode = 500;   //internal server error
                 res.end('Internal server error');
             } else {
                 // generate a list of links to the news files
@@ -124,7 +124,7 @@ const server = http.createServer((req, res) => {
         const filePath = path.join('news', fileName);
         fs.readFile(filePath, 'utf8', (err, data) => {
             if (err) {
-                res.statusCode = 404;
+                res.statusCode = 404; // the requested resource was not found on the server
                 res.end('File not found');
             } else {
                 // send the contents of the news file as the response
@@ -271,7 +271,7 @@ const server = http.createServer((req, res) => {
     }
 
     else {
-        // handle all other requests with a 404 error
+        // the requested resource was not found on the server
         res.statusCode = 404;
         res.end('Not found');
     }
@@ -286,8 +286,8 @@ arr.sort(function(a, b) {
     return arr;
 }
 
+//link server to port 8080
 server.listen(8080, () => {
     console.log('Server is listening on http://localhost:8080/');
 });
-
 
